@@ -43,7 +43,7 @@ struct node* add_node(int data)
 	return root;
 }
 
-struct node* convert(int *arr, int low, int high)
+struct node* convert_array_to_bst_wrapper(int *arr, int low, int high)
 {
 	struct node* root;
 	int mid = (low + high) / 2;
@@ -51,8 +51,8 @@ struct node* convert(int *arr, int low, int high)
 	if (low <= high)
 	{
 		root = add_node(arr[mid]);
-		root->left = convert(arr, low, mid - 1);
-		root->right = convert(arr, mid + 1, high);
+		root->left = convert_array_to_bst_wrapper(arr, low, mid - 1);
+		root->right = convert_array_to_bst_wrapper(arr, mid + 1, high);
 		return root;
 	}
 	else
@@ -63,6 +63,6 @@ struct node * convert_array_to_bst(int *arr, int len)
 {
 	if (arr == NULL)
 		return NULL;
-	return convert(arr, 0, len-1);
+	return convert_array_to_bst_wrapper(arr, 0, len - 1);
 }
 

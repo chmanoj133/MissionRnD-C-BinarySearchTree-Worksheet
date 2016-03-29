@@ -132,7 +132,7 @@ namespace spec
 				Assert::AreEqual(originaldata[i], swaplist[i]->data, L"Fix BST Failed Smallcase", 1, 2);
 			}
 		};
-		
+
 		[TestMethod, Timeout(2000)]
 		void FixBST_SmallCase3()
 		{
