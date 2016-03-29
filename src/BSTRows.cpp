@@ -30,8 +30,43 @@ struct node{
 };
 
 
-
 int* BSTRighttoLeftRows(struct node* root)
 {
-    return NULL;
+	int front = 0, rear = 1, next_len = 2, i;
+	struct node **queue = (struct node**)malloc(sizeof(struct node*));
+	int *arr;
+	queue[0] = root;
+
+	if (root == NULL)
+		return NULL;
+
+	while (1)
+	{
+		if (queue[front]->right != NULL)
+		{
+			queue = (struct node**)realloc(queue, sizeof(struct node*) * next_len);
+			queue[rear] = queue[front]->right;
+			rear++;
+			next_len++;
+		}
+
+		if (queue[front]->left != NULL)
+		{
+			queue = (struct node**)realloc(queue, sizeof(struct node*) * next_len);
+			queue[rear] = queue[front]->left;
+			next_len++;
+			rear++;
+		}
+		front++;
+
+		if (front >= rear)
+			break;
+	}
+
+	arr = (int *)malloc(sizeof(int)*rear);
+
+	for (i = 0; i < next_len - 1; i++)
+		arr[i] = queue[i]->data;
+
+    return arr;
 }
