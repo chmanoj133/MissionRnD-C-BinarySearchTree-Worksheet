@@ -23,13 +23,55 @@ struct node{
 };
 
 
-void inorder(struct node *root, int *arr){
-	
+void inorder_wrap(struct node *root, int *arr, int *i)
+{
+	if (root != NULL)
+	{
+		inorder_wrap(root->left, arr, i);
+		arr[*i] = root->data;
+		*i = *i + 1;
+		inorder_wrap(root->right, arr, i);
+	}
 }
-void preorder(struct node *root, int *arr){
-	
+
+void inorder(struct node *root, int *arr)
+{
+	int i = 0;
+	if (arr != NULL)
+		inorder_wrap(root, arr, &i);
 }
-void postorder(struct node *root, int *arr){
-	
+
+void preorder_wrap(struct node *root, int *arr, int *i)
+{
+	if (root != NULL)
+	{
+		arr[*i] = root->data;
+		(*i)++;
+		preorder_wrap(root->left, arr, i);
+		preorder_wrap(root->right, arr, i);
+	}
+}
+void preorder(struct node *root, int *arr)
+{
+	int i = 0;
+	if (arr != NULL)
+		preorder_wrap(root, arr, &i);
+}
+
+void postorder_wrap(struct node *root, int *arr, int *i)
+{
+	if (root != NULL)
+	{
+		postorder_wrap(root->left, arr, i);
+		postorder_wrap(root->right, arr, i);
+		arr[*i] = root->data;
+		(*i)++;
+	}
+}
+void postorder(struct node *root, int *arr)
+{
+	int i = 0;
+	if (arr != NULL)
+		postorder_wrap(root, arr, &i);
 }
 

@@ -40,17 +40,108 @@ struct node{
 	struct node *right;
 };
 
+// get_height implemented here in two methods
+// 1. Using queue -> level traversal (non-recursive)
+// 2. Using post-order traversal (recursive)
 
-int get_height(struct node *root){
+int get_height(struct node *root)
+{
+	// explanation: In level traversal, last element in queue would the last node of largest path in BST
+	// traversing from that node to root, counting each node is our height
+	struct store
+	{
+		struct node *child;
+		struct node *parent;
+	};
+	if (root == NULL)
+		return 0;
 
-	return 0;
+	struct store *queue = (struct store*)malloc(sizeof(struct store));
+	struct node *parent;
+	queue[0].child = root;
+	queue[0].parent = NULL;
+
+	int front = 0, rear = 1, i, height = 1, next_len = 2;
+
+	while (1)
+	{
+		if (queue[front].child->left != NULL) 
+		{
+			queue = (struct store*)realloc(queue, sizeof(struct store) * next_len);
+			queue[rear].child = queue[front].child->left;
+			queue[rear].parent = queue[front].child;
+			next_len++;
+			rear++;
+		}
+		if (queue[front].child->right != NULL)
+		{
+			queue = (struct store*)realloc(queue, sizeof(struct store) * next_len);
+			queue[rear].child = queue[front].child->right;
+			queue[rear].parent = queue[front].child;
+			rear++;
+			next_len++;
+		}
+		front++;
+
+		if (front >= rear)
+			break;
+	}
+
+	parent = queue[rear - 1].parent;
+	for (i = rear - 1; i >= 0; i--)
+	{
+		if (queue[i].child == parent)
+		{
+			parent = queue[i].parent;
+			height++;
+		}
+	}
+	return height;
 }
 
-int get_left_subtree_sum(struct node *root){
-	return 0;
+/*
+int get_height(struct node* root)
+{
+	int left_height, right_height;
+	if (root == NULL)
+		return 0;
+	else
+	{
+		left_height = get_height(root->left);
+		right_height = get_height(root->right);
+
+		if (left_height > right_height)
+			return left_height + 1;
+		else
+			return right_height + 1;
+	}
 }
 
-int get_right_subtree_sum(struct node *root){
-	return 0;
+*/
+
+void sum_of_tree(struct node *root, int *sum)
+{
+	if (root != NULL)
+	{
+		sum_of_tree(root->left, sum);
+		*sum = *sum + root->data;
+		sum_of_tree(root->right, sum);
+	}
+}
+
+int get_left_subtree_sum(struct node *root)
+{
+	int sum = 0;
+	if (root != NULL)
+		sum_of_tree(root->left, &sum);
+	return sum;
+}
+
+int get_right_subtree_sum(struct node *root)
+{
+	int sum = 0;
+	if (root != NULL)
+		sum_of_tree(root->right, &sum);
+	return sum;
 }
 
