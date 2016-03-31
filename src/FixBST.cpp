@@ -33,6 +33,11 @@ struct node
 	struct node *right;
 };
 
+
+// USING INORDER TRAVERSAL, Since it processes in ascending order comparing present data value with 
+// previous data value, we can find both the misplaced values. propagating first misplaced value throughout
+// recursion until second misplaced value founds and swapping gives the result..
+
 void inorder_fix(struct node *root, int **prev, int **toswap1, int **toswap2, int *action)
 {
 	if (root != NULL)
@@ -71,5 +76,4 @@ void fix_bst(struct node *root)
 		*a = *b;
 		*b = temp;
 	}
-
 }
