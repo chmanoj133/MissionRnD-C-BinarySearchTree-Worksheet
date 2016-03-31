@@ -38,27 +38,20 @@ struct node
 // previous data value, we can find both the misplaced values. propagating first misplaced value throughout
 // recursion until second misplaced value founds and swapping gives the result..
 
-void inorder_fix(struct node *root, int **prev, int **toswap1, int **toswap2, int *action)
+void inorder_fix(struct node *root, int **prev, int **toswap1, int **toswap2)
 {
 	if (root != NULL)
 	{
-		inorder_fix(root->left, prev, toswap1, toswap2, action);
+		inorder_fix(root->left, prev, toswap1, toswap2);
 		if (**prev > root->data && *toswap1 == NULL)
 		{
 			*toswap1 = *prev;
 			*toswap2 = &root->data;
-			*action = 1;
 		}
 		else if (**prev > root->data && *toswap1 != NULL)
-		{
 			*toswap2 = &root->data;
-			int temp = **toswap1;
-			**toswap1 = **toswap2;
-			**toswap2 = temp;
-			*action = 2;
-		}
 		*prev = &root->data;
-		inorder_fix(root->right, prev, toswap1, toswap2, action);
+		inorder_fix(root->right, prev, toswap1, toswap2);
 	}
 }
 
@@ -66,14 +59,13 @@ void inorder_fix(struct node *root, int **prev, int **toswap1, int **toswap2, in
 void fix_bst(struct node *root)
 {
 	int *prev = NULL, temp = -1;
-	int action = 0;
 	int *a = NULL, *b = NULL;
+	if (root == NULL)
+		return;
 	prev = &temp;
-	inorder_fix(root, &prev, &a, &b, &action);
-	if (action == 1)
-	{
-		temp = *a;
-		*a = *b;
-		*b = temp;
-	}
+	inorder_fix(root, &prev, &a, &b);
+	temp = *a;
+	*a = *b;
+	*b = temp;
+
 }
